@@ -1,29 +1,3 @@
-#import Gesichterextrahierer as GE
-#
-#PFAD_A = './daten/lernen/Joe_Biden/nur_joe_biden_gemischt.mp4'
-#PFAD_B = './daten/lernen/Chuck_Norris/nur_Chuck_Norris_gemischt.mp4'
-#PFAD_KASKADE = './daten/cascades/haarcascade_frontalface_default.xml'
-#
-#g = GE.Gesichterextrahierer(PFAD_KASKADE)
-#g.lade(PFAD_A)
-#g.extrahiereGesichter(
-#    bildgroesse_ausgabe=128,
-#    max_anzahl_bilder=3000,
-#    ordner_ausgabe='./daten/lernen/Gesichter/A'
-#)
-#g.lade(PFAD_B)
-#g.extrahiereGesichter(
-#    bildgroesse_ausgabe=128,
-#    max_anzahl_bilder=2300,
-#    ordner_ausgabe='./daten/lernen/Gesichter/B'
-#)
-#
-#del PFAD_A, PFAD_B, PFAD_KASKADE, g
-
-
-# In[5]:
-
-
 import numpy as np
 import cv2
 import os
@@ -64,10 +38,10 @@ def verzerren(bild: list, staerke: int):
     bild_verzerrt = bild_verzerrt[staerke:hoehe-staerke, staerke:breite-staerke]
     return cv2.resize(bild_verzerrt, (breite, hoehe))
 
-datensatz_gesichter_A_train, datensatz_gesichter_A_test = erstelleDatensatz('./daten/lernen/Gesichter/A', 20000)
+datensatz_gesichter_A_train, datensatz_gesichter_A_test = erstelleDatensatz('./daten/lernen/Gesichter/A', 8192)
 NAME_AUTOENCODER_A = 'Biden'
 
-datensatz_gesichter_B_train, datensatz_gesichter_B_test = erstelleDatensatz('./daten/lernen/Gesichter/B', 20000)
+datensatz_gesichter_B_train, datensatz_gesichter_B_test = erstelleDatensatz('./daten/lernen/Gesichter/B', 8192)
 NAME_AUTOENCODER_B = 'Putin'
 
 

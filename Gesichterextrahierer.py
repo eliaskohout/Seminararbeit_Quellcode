@@ -89,6 +89,7 @@ def main(argv):
     -c : Pfad für die Haarcascade
     -o : Zielordner für die Ausgabe
     -h : Drucken dieser Hilfenachricht""")
+                return 0
 
     g = Gesichterextrahierer(pfad_cascade)
     g.lade(argv[-1])
