@@ -39,30 +39,6 @@ class LoggingCallback(tensorflow.keras.callbacks.Callback):
             logString += "{};{};".format(key, val)
         self.log(logString)
 
-    def on_test_begin(self, logs=None):
-        logString = "on_test_begin;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_end(self, logs=None):
-        logString = "on_test_end;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_begin(self, logs=None):
-        logString = "on_predict_begin;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_end(self, logs=None):
-        logString = "on_predict_end;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
     def on_train_batch_begin(self, batch, logs=None):
         logString = "on_train_batch_begin;batch;{};".format(batch)
         for key, val in logs.items():
@@ -71,30 +47,6 @@ class LoggingCallback(tensorflow.keras.callbacks.Callback):
 
     def on_train_batch_end(self, batch, logs=None):
         logString = "on_train_batch_end;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_batch_begin(self, batch, logs=None):
-        logString = "on_test_batch_begin;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_batch_end(self, batch, logs=None):
-        logString = "on_test_batch_end;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_batch_begin(self, batch, logs=None):
-        logString = "on_predict_batch_begin;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_batch_end(self, batch, logs=None):
-        logString = "on_predict_batch_end;batch;{};".format(batch)
         for key, val in logs.items():
             logString += "{};{};".format(key, val)
         self.log(logString)
