@@ -165,7 +165,7 @@ autoencoder_B_checkpoint_callback = ModelCheckpoint(
 
 import time, gc
 
-ZEITPUNKT_ENDE = time.time() + int(7.8*60*60)
+ZEITPUNKT_ENDE = time.time() + int(100*60*60)
 
 while time.time() < ZEITPUNKT_ENDE:
     print("!- Noch für ~{:.2f}h beschäftigt.".format(( ZEITPUNKT_ENDE-time.time() )/3600) )
