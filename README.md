@@ -17,8 +17,12 @@ Das Projekt ist wie folgt strukturiert:
 │   └── modelle  
 │       └── Autoencoder
 │           ├── modell.info  
-│           ├── Biden  
-│           └── Norris  
+│           ├── Biden
+│           │   ├── train.log
+│           │   └── Gesichter
+│           └── Norris
+│               ├── train.log
+│               └── Gesichter
 └── skripte  
     ├── extrahiere_val_loss.awk  
     ├── frame_shuffle.py  
@@ -47,8 +51,14 @@ _In diesem Ordner werden in den Unterordnern A und B die Extrahierten Gesichter 
 ```📂 modelle```   
 _Hier werden, in einzelnen Unterordnern, die Modelle gespeichert. Wird einem Modell ein neuer Name gegeben, wird hier ein neuer Ordner erstellt._
 
-```📂 Autoencoder```
-_Ein beispielhafter Ordner, der die Daten zu dem Modell mit dem Namen 'Autoencoder' enthält. Alle Dateien und Ordner, die hier enthalten sind werden automatisch generiert. Die Unterordner 'Biden' und 'Norris' enthalten jeweils einen Autoencoder, deren Namen zuvor gewählt werden können._
+```📂 Autoencoder```   
+_Ein beispielhafter Ordner, der die Daten zu dem Modell mit dem Namen 'Autoencoder' enthält. Alle Dateien und Ordner, die hier enthalten sind werden automatisch generiert. Die Unterordner 'Biden' und 'Norris' enthalten jeweils einen Autoencoder, deren Namen zuvor gewählt werden kann._
+
+```🪵 train.log```  
+_Eine Textdatei, in der Lernfortschritt dokumentiert wird._
+
+```📂 Bilder```   
+_Im Laufe des Trainings werden immer wieder Bilder mit dem Modell erstellt, welche hier dann abgespeichert werden. Die Bilder, die ein 'A' im Namen haben, wurden mit dem Modell komprimiert und so ähnlich wie möglich wiederhergestellt. Die Bilder, die ein 'B' im Namen haben, wurden komprimiert und als die jeweils andere Person wiederhergestellt. Die Zahl im Namen ist die Unixzeit zu der das Bild entstanden ist._
 
 ```ℹ️ modell.info```  
 _Eine Textdatei mit einer Übersicht über die Struktur des Modells._
