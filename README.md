@@ -1,4 +1,5 @@
-Das Projekt ist wie folgt Strukturiert:
+___
+Das Projekt ist wie folgt strukturiert:
 
 ```
 │
