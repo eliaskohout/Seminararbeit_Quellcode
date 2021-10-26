@@ -2,6 +2,7 @@
 
 import sys, cv2, time, os
 import numpy as np
+import face_recognition
 
 
 class Gesichterextrahierer:
@@ -30,15 +31,13 @@ class Gesichterextrahierer:
             pfad_Video_ohne_Endung = ".".join(self.PFAD_VIDEO.split(".")[:-1])
             video_writer = cv2.VideoWriter(f'{pfad_Video_ohne_Endung}_geändert.mp4', cv2.VideoWriter_fourcc(*'mp4v'), self.fps, (self.frame_width, self.frame_height))
         ist_bild, bild = self.video.read()
-        bild = np.array(bild)
         i = 0
 
         while ist_bild:
             bild_grau = cv2.cvtColor(bild, cv2.COLOR_BGR2GRAY)
-            gesichter = self.CASCADE.detectMultiScale(bild_grau, 1.3, 5)
+            gesichter = self.CASCADE.detectMultiScale(bild_grau, scaleFactor=1.3, minNeighbors=5)
             for (x, y, breite, hoehe) in gesichter:
-                if breite < bildgroesse_gesicht or hoehe < bildgroesse_gesicht:
-                    continue
+                if hoehe < bildgroesse_gesicht or breite < bildgroesse_gesicht: continue
                 gesicht = bild[y:y+hoehe, x:x+breite]
                 gesicht_skaliert = cv2.resize(gesicht, (bildgroesse_gesicht, bildgroesse_gesicht))
                 i += 1
@@ -64,12 +63,25 @@ class Gesichterextrahierer:
         anzahl_extrahierter_bilder = self.fuerGesichterMache(funktion, bildgroesse_ausgabe, max_anzahl_bilder, speichern=False)
         print("\r"+"Es wurden erfolgreich %d Bilder nach %s exportiert." % (anzahl_extrahierter_bilder, ordner_ausgabe))
 
+    def extrahiereUndValidiereGesichter(self, referenzbild: list, bildgroesse_ausgabe: int, max_anzahl_bilder: int, ordner_ausgabe: str):
+        encoding_referenz = face_recognition.face_encodings(referenzbild)
+        def funktion(num_bild_tuple):
+            i, bild = num_bild_tuple
+            encoding_bild = face_recognition.face_encodings(bild)[0]
+            if face_recognition.compare_faces(encoding_referenz, encoding_bild, 0.6):
+                cv2.imwrite(os.path.join(ordner_ausgabe, f'Gesicht_{i}.png'), bild)
+                print("\r"+"Anzahl der extrahierten Bilder: %d" % i, end='')
+
+        anzahl_extrahierter_bilder = self.fuerGesichterMache(funktion, bildgroesse_ausgabe, max_anzahl_bilder, speichern=False)
+        print("\r"+"Es wurden erfolgreich %d Bilder nach %s exportiert." % (anzahl_extrahierter_bilder, ordner_ausgabe))
+
 
 def main(argv):
     bildgroesse_ausgabe = 256
     max_anzahl_bilder = 50000
-    pfad_cascade = "./daten/cascades/haarcascade_frontalface_default.xml"
+    pfad_cascade = "./daten/cacades/haarcascade_frontalface_default.xml"
     ordner_ausgabe = "./daten/Gesichter"
+    pfad_validierungbild = ""
 
     for index, argument in enumerate(argv):
         if argument[0] == '-':
@@ -81,6 +93,8 @@ def main(argv):
                 pfad_cascade = argv[index+1]
             elif 'o' == argument[1]:
                 ordner_ausgabe = argv[index+1]
+            elif 'v' == argument[1]:
+                pfad_validierungbild = argv[index+1]
             elif 'h' == argument[1]:
                 print("Nutzung: %s [Optionen] [Videodatei]\n" % argv[0])
                 print("""Optionen:
@@ -88,11 +102,17 @@ def main(argv):
     -a : Maximale Anzahl der zu extrahierenden Bildern
     -c : Pfad für die Haarcascade
     -o : Zielordner für die Ausgabe
-    -h : Drucken dieser Hilfenachricht""")
+    -h : Drucken dieser Hilfenachricht
+    -v : Pfad zu einem Validierungsbild""")
+                return
 
     g = Gesichterextrahierer(pfad_cascade)
     g.lade(argv[-1])
-    g.extrahiereGesichter(bildgroesse_ausgabe, max_anzahl_bilder, ordner_ausgabe)
+    if pfad_validierungbild:
+        validierungsbild = cv2.imread(pfad_validierungbild)
+        g.extrahiereUndValidiereGesichter(validierungsbild, bildgroesse_ausgabe, max_anzahl_bilder, ordner_ausgabe)
+    else:
+        g.extrahiereGesichter(bildgroesse_ausgabe, max_anzahl_bilder, ordner_ausgabe)
 
 
 if __name__ == "__main__":
