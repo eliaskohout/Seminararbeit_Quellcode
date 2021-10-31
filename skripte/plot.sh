@@ -4,7 +4,7 @@ plot_befehl="plot "
 for dateiname in $@; do
 	name=$(echo $dateiname | awk 'BEGIN {FS="/";} { print $3 }' - | sed -e "s/DenseLayers\?_.*_//g" )  # Namen aus dem Pfad extrahieren
 	dateiname_daten=plot-script_$name.temp
-	awk -f skripte/extrahiere_val_loss.awk $dateiname > $dateiname_daten  # Datei mit den zu plotenden Daten erstellen
+	awk -f skripte/gib_val_loss.awk $dateiname > $dateiname_daten  # Datei mit den zu plotenden Daten erstellen
 	plot_befehl+="'$dateiname_daten' using (\$1/3600):2 title \"$(echo $name | sed -e "s/e-/x10\^-^/" )\" with line linewidth 4,"  # An den Plot-Befehl anfügen
 done
 echo $plot_befehl
