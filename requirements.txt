@@ -2,3 +2,6 @@ tensorflow>=2.6.0
 opencv-contrib-python
 matplotlib
 face_recognition
+pyyaml
+h5py
+jupyterlab

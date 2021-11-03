@@ -5,8 +5,8 @@ import numpy as np
 class LoggingCallback(tensorflow.keras.callbacks.Callback):
     def __init__(self, pfad_modell: str, bild_A: list, bild_B: list):
         self.pfad_modell = pfad_modell
-        self.bild_A = bild_A.reshape(1, 128, 128, 3)
-        self.bild_B = bild_B.reshape(1, 128, 128, 3)
+        self.bild_A = bild_A.reshape(1, 64, 64, 3)
+        self.bild_B = bild_B.reshape(1, 64, 64, 3)
         try: os.mkdir(os.path.join(self.pfad_modell, 'Bilder/'))
         except FileExistsError: pass
 

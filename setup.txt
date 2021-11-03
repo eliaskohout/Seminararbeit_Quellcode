@@ -1,2 +1,4 @@
 pyhton -m pip install -r requirement.txt
 python -m pip install numpy==1.21.3
+
+sudo dnf install gnuplot
