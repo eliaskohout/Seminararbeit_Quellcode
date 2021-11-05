@@ -1,5 +1,5 @@
 # AWK-Skript, dass die train.log Datei eines Modells einliest und eine Liste der 'val_loss' Werte
-# mit den Sekunden die bereits fürs Training verwendet wurden ausgibt.
+# mit den Sekunden die bereits fürs Training verwendet wurden ausgibt. Wird von 'plot.sh' verwendet.
 # 
 # Output-Format:
 # <Trainierte Sekunden>		<Loss-Wert zu dem Zeitpunkt>

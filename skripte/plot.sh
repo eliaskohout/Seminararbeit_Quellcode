@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Bash-Skript, das aus den als Argumente übergebenen 'train.log' Dateien ein Diagramm macht.
+# Verwendet AWK um die Daten zu formatieren und gnuplot um das Diagramm zu erstellen.
+
 plot_befehl="plot "
 for dateiname in $@; do
 	name=$(echo $dateiname | awk 'BEGIN {FS="/";} { print $3 }' - | sed -e "s/DenseLayers\?_.*_//g" )  # Namen aus dem Pfad extrahieren
