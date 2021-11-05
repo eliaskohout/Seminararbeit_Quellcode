@@ -1,3 +1,12 @@
+"""
+Die Klasse LoggingCallback, erbt von tensorflow.keras.callbacks.Callback
+
+Wird als Instanz beim Trianieren mit der fit-Methode als callback übergeben. Die Methoden, welche mit "on_..."
+beginnen werden zu dem entsprechenden Zeitpunkt wärend des Trainingsprozesses aufgerufen und dokumentieren den
+Trainingsvortschritt in der Datei 'train.log' im Verzeichnis des Modells. Bei jedem Trainingsbeginn wird ein
+Gesicht von jeder der beiden Personen durch das Modell geschickt und im Verzeichnis 'Bilder' Abgespeichert.
+"""
+
 import tensorflow.keras.callbacks
 import time, os, cv2
 import numpy as np
@@ -5,8 +14,8 @@ import numpy as np
 class LoggingCallback(tensorflow.keras.callbacks.Callback):
     def __init__(self, pfad_modell: str, bild_A: list, bild_B: list):
         self.pfad_modell = pfad_modell
-        self.bild_A = bild_A.reshape(1, 64, 64, 3)
-        self.bild_B = bild_B.reshape(1, 64, 64, 3)
+        self.bild_A = bild_A.reshape(1, 128, 128, 3)
+        self.bild_B = bild_B.reshape(1, 128, 128, 3)
         try: os.mkdir(os.path.join(self.pfad_modell, 'Bilder/'))
         except FileExistsError: pass
 
@@ -17,7 +26,6 @@ class LoggingCallback(tensorflow.keras.callbacks.Callback):
     def speichereBild(self, bild: list, pfad: str):
         bild = cv2.normalize(bild, None, alpha = 0, beta = 255, norm_type = cv2.NORM_MINMAX, dtype = cv2.CV_32F)
         bild = bild.astype(np.uint8)
-        #bild = cv2.cvtColor(bild, cv2.COLOR_BGR2RGB)
         cv2.imwrite(pfad, bild)
 
     def on_train_begin(self, logs=None):
@@ -39,30 +47,6 @@ class LoggingCallback(tensorflow.keras.callbacks.Callback):
             logString += "{};{};".format(key, val)
         self.log(logString)
 
-    def on_test_begin(self, logs=None):
-        logString = "on_test_begin;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_end(self, logs=None):
-        logString = "on_test_end;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_begin(self, logs=None):
-        logString = "on_predict_begin;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_end(self, logs=None):
-        logString = "on_predict_end;"
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
     def on_train_batch_begin(self, batch, logs=None):
         logString = "on_train_batch_begin;batch;{};".format(batch)
         for key, val in logs.items():
@@ -71,30 +55,6 @@ class LoggingCallback(tensorflow.keras.callbacks.Callback):
 
     def on_train_batch_end(self, batch, logs=None):
         logString = "on_train_batch_end;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_batch_begin(self, batch, logs=None):
-        logString = "on_test_batch_begin;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_test_batch_end(self, batch, logs=None):
-        logString = "on_test_batch_end;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_batch_begin(self, batch, logs=None):
-        logString = "on_predict_batch_begin;batch;{};".format(batch)
-        for key, val in logs.items():
-            logString += "{};{};".format(key, val)
-        self.log(logString)
-
-    def on_predict_batch_end(self, batch, logs=None):
-        logString = "on_predict_batch_end;batch;{};".format(batch)
         for key, val in logs.items():
             logString += "{};{};".format(key, val)
         self.log(logString)
