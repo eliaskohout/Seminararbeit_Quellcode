@@ -18,4 +18,4 @@ for line in fileinput.input():
         img_size = (int( np.sqrt( len(gewichtungen) ) ),)*2 + (1,)
         gewichtungen.resize(img_size)
         bild = cv2.normalize(gewichtungen, np.zeros((128,128)), 0, 255, cv2.NORM_MINMAX)
-        cv2.imwrite(f"Layers/{gruppe}_{neuron}.png", bild)
+        cv2.imwrite(f"daten/Bilder_Gewichte/{gruppe}_{neuron}.png", bild)

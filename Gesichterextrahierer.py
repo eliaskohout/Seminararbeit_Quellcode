@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!python3.8
 import sys, cv2, time, os
 import numpy as np
 import face_recognition
@@ -10,8 +10,10 @@ class Gesichterextrahierer:
         self.bildgroesse_output = 128
         self.counter = 0
 
+
     def setzeBildgroesse(self, bildgroesse_output):
         self.bildgroesse_output = bildgroesse_output
+
 
     def lade(self, pfad_video):
         self.pfad_video = pfad_video
@@ -19,6 +21,7 @@ class Gesichterextrahierer:
         self.fps = self.video.get(cv2.CAP_PROP_FPS)
         self.frame_height = int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))
         self.frame_width = int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH))
+
 
     def play(self):
         while True:
@@ -29,6 +32,7 @@ class Gesichterextrahierer:
             time.sleep(1/self.fps-1)
         self.video.set(cv2.CAP_PROP_POS_FRAMES, 1)
         cv2.destroyAllWindows()
+
 
     def fuerGesichterMache(self, funktion, max_anzahl_gesichter, speichern=True) -> int:
         if speichern:
@@ -45,9 +49,9 @@ class Gesichterextrahierer:
                 gesicht = bild[y:y+hoehe, x:x+breite]
                 gesicht_skaliert = cv2.resize( gesicht, (self.bildgroesse_output,)*2 )
                 rueckgabe_funktion = funktion( gesicht_skaliert )
-                if rueckgabe_funktion == False: break
+                if type(rueckgabe_funktion) == bool and rueckgabe_funktion == False: break
                 if speichern:
-                    neues_Gesicht_skaliert = cv2.resize(neues_Gesicht, (breite, hoehe))
+                    neues_Gesicht_skaliert = cv2.resize(rueckgabe_funktion, (breite, hoehe))
                     bild[y:y+hoehe, x:x+breite] = neues_Gesicht_skaliert
                     video_writer.write(bild)
                 print("\r"+"Es wurden erfolgreich %d Bilder bearbeitet." % self.counter, end='')
@@ -63,6 +67,7 @@ class Gesichterextrahierer:
         self.counter = 0
         return x
 
+
     def extrahiereGesichter(self, max_anzahl_bilder: int, ordner_ausgabe: str):
         def funktion(bild):
             cv2.imwrite(os.path.join(ordner_ausgabe, f'Gesicht_{self.counter}.png'), bild)
@@ -71,6 +76,7 @@ class Gesichterextrahierer:
         print("Exportiere Bilder nach %s." % ordner_ausgabe)
         anzahl_extrahierter_bilder = self.fuerGesichterMache(funktion, max_anzahl_bilder, speichern=False)
         print("\r"+"Es wurden erfolgreich %d Bilder nach %s exportiert." % (anzahl_extrahierter_bilder, ordner_ausgabe))
+
 
     def extrahiereUndValidiereGesichter(self, referenzbild: list, max_anzahl_bilder: int, ordner_ausgabe: str, toleranz=0.6):
         encoding_referenz = face_recognition.face_encodings(referenzbild)
