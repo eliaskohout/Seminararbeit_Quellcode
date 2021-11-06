@@ -1,4 +1,9 @@
-#!/bin/python3
+#!/usr/bin/python3
+
+"""
+Ein simples Skript, das es ermöglicht die Bilder in einem Video zu mischen.
+Wenn die Datei direkt als Skript ausgeführt wird, wird das erste Argument als Pfad für das zu bearbeitende Video verwendet.
+"""
 
 import cv2, sys, random, time
 
